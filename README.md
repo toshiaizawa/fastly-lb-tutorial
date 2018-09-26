@@ -191,3 +191,4 @@ return(pass);
 
 ## チュートリアル3 (Big Query へのログストリーミング)
 
+手順はドキュメント [Log streaming: Google BigQuery](https://docs.fastly.com/guides/streaming-logs/log-streaming-google-bigquery) の通りとなります。この部分は本日はデモとして説明いたします。
