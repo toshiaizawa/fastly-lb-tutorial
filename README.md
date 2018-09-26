@@ -55,7 +55,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 ### Step 3: コンテンツをキャッシュしない設定にサービスを変更
 
-1. Step 2で作成したサービスの Configure 画面にて、画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成され、そこから設定変更が可能です
+1. Step 2で作成したサービスの Configure 画面にて、画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成され変更可能となる
 2. 画面左のメニューから **Setting** をクリック
 3. 表示された画面で Fallback TTL とある下の、**Fallback TTL (sec)** フィールドに `0` を入力し、Save ボタンをクリック
 4. 同画面の右上にある **Activate** ボタンをクリックすると、新しい設定の有効化が行われます
@@ -100,7 +100,94 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 ## チュートリアル2 (マルチクラウド・ロードバランサー)
 
+### ねらい
 
+* 複数オリジン間のロードバランス機能が実装できる
+* ヘルスチェックとフェイルオーバーが実装できる
+
+### 必要となる設定値
+
+* マイクロサービス A (バックアップ) URL: `http://<Service_A_Backup_IP>/`
+* マイクロサービス A の VCL 内での backend 参照名: *F_addr_123_45_67_89*
+* マイクロサービス A (バックアップ) の VCL 内での backend 参照名: *F_Service_A_Backup*
+
+### Step 1: マイクロサービス A のバックアップをオリジンとしてサービスへ追加
+
+1. チュートリアル1で作成したサービスの Configure 画面にて、画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成されます
+2. 画面左のメニューから **Origins** をクリック
+3. 表示された画面で Hosts とある下の、**Create host** ボタンをクリック
+4. **Create a host** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
+5. 同画面にて、**Address** フィールドにマイクロサービス A (バックアップ) の IP アドレス `<Service_A_Backup_IP>` を記入
+6. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
+7. 同画面にて、**Auto load balance** に対して `Yes` を選択
+8. 同画面の下部から、**Create** ボタンをクリックすると、オリジンとなるホストが新たに作成されます
+9. 表示された Hosts 画面から、`<Service_A_IP>` をクリック
+10. **Edit this host** 画面にて、**Auto load balance** に対して `Yes` を選択
+11. 同画面の下部から、**Update** ボタンをクリック
+
+### Step 2: ロードバランス機能の有効化と動作確認
+
+1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
+2. **確認** `https://lab0927-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+3. **さらに確認** 時間に余裕があれば、**Edit this host** から **Weight** の値を変更した上で有効化。ロードバランスの重み付けが変更できることを確認してください
+
+### Step 3: ヘルスチェックの作成と適用
+
+1. 画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成されます
+2. 画面左のメニューから **Origins** をクリック
+3. 表示された画面で Health checks とある下の、**Create your first health check** ボタンをクリック
+4. **Create a health check** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
+5. 同画面にて、**Request** のドロップダウンには `HEAD` を選択、フィールドには `/` を記入
+6. 同画面にて、**Host header** フィールドには `lab0927-000.global.ssl.fastly.net` を記入
+7. 同画面にて、**Check frequency** には `Medium` を選択
+8. 画面の下部から、**Create** ボタンをクリック
+9. 表示された Hosts 画面から、`<Service_A_IP>` をクリック
+10. **Edit this host** 画面にて、**Health check** には `HEAD / - lab0927-000.global.ssl.fastly.net` を選択
+11. 画面の下部から、**Update** ボタンをクリック
+12. `<Service_A_Backup_IP>` についても、9〜11 の手順を繰り返す
+13. 画面の右上にある **Activate** ボタンをクリックすると、新しい設定の有効化が行われます
+
+### Step 4: フェイルオーバー機能の明示的な実装
+
+1. 画面上部右の **Options** ボタンから **Show VCL** を選択
+2. 表示された VCL の冒頭部より、各オリジンを指す Backend の参照名 (**F_** で始まる文字列) を確認
+3. 画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成されます
+4. 画面左のメニューから **VCL snippets** をクリック
+5. 表示された画面で Health checks とある下の、**Create your first VCL snippet** ボタンをクリック
+6. **Create a VCL snippet** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
+7. 同画面にて、**Type** に対して `within subroutine` を、続いて **Select subroutine...** に対して `recv (vcl_recv)` をそれぞれ選択
+8. **VCL** フィールドには下記「コード2」を記入。ただし、*F_addr_123_45_67_89* と *F_Service_A_backup* の部分は手順2で確認した Backend 参照名へ置き換えること
+9. 同画面の下部から、**Create** ボタンをクリック
+
+### Step 5: フェイルオーバー機能の有効化と動作確認
+
+1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
+2. **確認** `https://lab0927-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+3. **確認** マイクロサービス A のオリジンのいずれかをダウンさせ、さらにページのリロードを繰り返す。ダウン後 30秒間ほどの間は 503 エラーが散発する。その後、ダウンしたオリジンは切り離され、稼働中のオリジンだけが参照される。
+
+コード1: 手順 2 の VCL 表示例
+```
+backend F_addr_123_45_67_89 {
+    .first_byte_timeout = 15s;
+    .connect_timeout = 1s;
+    .max_connections = 200;
+    .between_bytes_timeout = 10s;
+    .share_key = "xxxxxxxxxxxxxxxxxxxxxx";
+    .port = "80";
+    .host = "<Service_A_IP>";
+```
+
+コード2: 手順 8 にて入力する VCL コード
+```
+# primary to backup failover
+if(req.backend == *F_addr_123_45_67_89* && (!req.backend.healthy || req.restarts > 0)) {
+  set req.backend = *F_Service_A_backup*;
+# backup to primary failover
+} else if(req.backend == *F_Service_A_backup* && (!req.backend.healthy || req.restarts > 0)) {
+  set req.backend = *F_addr_123_45_67_89*;
+}
+return(pass);
+```
 
 ## チュートリアル3 (Big Query へのログストリーミング)
 
