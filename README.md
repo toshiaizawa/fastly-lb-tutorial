@@ -108,8 +108,8 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### 必要となる設定値
 
 * マイクロサービス A (バックアップ) URL: `http://<Service_A_Backup_IP>/`
-* マイクロサービス A の VCL 内での backend 参照名: *F_addr_123_45_67_89*
-* マイクロサービス A (バックアップ) の VCL 内での backend 参照名: *F_Service_A_Backup*
+* マイクロサービス A の VCL 内での backend 参照名: `F_addr_123_45_67_89`
+* マイクロサービス A (バックアップ) の VCL 内での backend 参照名: `F_Service_A_Backup`
 
 ### Step 1: マイクロサービス A のバックアップをオリジンとしてサービスへ追加
 
