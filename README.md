@@ -150,13 +150,13 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 4: フェイルオーバー機能の明示的な実装
 
 1. 画面上部右の **Options** ボタンから **Show VCL** を選択
-2. 表示された VCL の冒頭部より、各オリジンを指す Backend の参照名 (**F_** で始まる文字列) を確認
+2. 表示された VCL の冒頭部より、各オリジンを指す Backend の参照名 (**F_** で始まる文字列) を[確認](#コード1-手順-2-の-vcl-表示例)
 3. 画面上部右の **Configuration** ボタンから **Clone Active** を選択すると、新バージョンの設定が作成されます
 4. 画面左のメニューから **VCL snippets** をクリック
 5. 表示された画面で Health checks とある下の、**Create your first VCL snippet** ボタンをクリック
 6. **Create a VCL snippet** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
 7. 同画面にて、**Type** に対して `within subroutine` を、続いて **Select subroutine...** に対して `recv (vcl_recv)` をそれぞれ選択
-8. **VCL** フィールドには下記「コード2」を記入。ただし、*F_addr_123_45_67_89* と *F_Service_A_backup* の部分は手順2で確認した Backend 参照名へ置き換えること
+8. **VCL** フィールドには下記[「コード2」](#コード2-手順-8-にて入力する-vcl-コード)を記入。ただし、*F_addr_123_45_67_89* と *F_Service_A_backup* の部分は手順2で確認した Backend 参照名へ置き換えること
 9. 同画面の下部から、**Create** ボタンをクリック
 
 #### コード1: 手順 2 の VCL 表示例
