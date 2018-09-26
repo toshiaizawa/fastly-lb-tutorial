@@ -174,11 +174,11 @@ backend F_addr_123_45_67_89 {
 #### コード2: 手順 8 にて入力する VCL コード
 ```
 # primary to backup failover
-if(req.backend == *F_addr_123_45_67_89* && (!req.backend.healthy || req.restarts > 0)) {
-  set req.backend = *F_Service_A_backup*;
+if(req.backend == F_addr_123_45_67_89 && (!req.backend.healthy || req.restarts > 0)) {
+  set req.backend = F_Service_A_backup;
 # backup to primary failover
-} else if(req.backend == *F_Service_A_backup* && (!req.backend.healthy || req.restarts > 0)) {
-  set req.backend = *F_addr_123_45_67_89*;
+} else if(req.backend == F_Service_A_backup && (!req.backend.healthy || req.restarts > 0)) {
+  set req.backend = F_addr_123_45_67_89;
 }
 return(pass);
 ```
