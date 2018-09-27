@@ -192,3 +192,20 @@ return(pass);
 ## チュートリアル3 (デモ：Dynamic Servers を用いたロードバランサー)
 
 Dynamic Servers を用いると、より柔軟なロードバランス機能が実現できます。チュートリアル2では、ロードバランス設定の変更には、VCL の変更と有効化が必要でした。Dynamic Servers では API 呼び出しにより、VCL にふれることなく、サーバーの追加・削除等が可能です。
+
+API 実行例
+
+サービスのクローン
+`curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone | jq`
+
+Dynamic Servers プール作成
+`curl -sv -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool -d 'name=cloudpool&comment=cloudpool' | jq`
+
+プールへサーバー追加
+`curl -vs -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d 'address=<ip>' | jq`
+
+サービスの有効化
+`curl -vs -H "Fastly-Key: ${API_KEY}" -X PUT https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/activate | jq`
+
+プールへサーバー追加
+`curl -vs -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d 'address=<ip>' | jq`
