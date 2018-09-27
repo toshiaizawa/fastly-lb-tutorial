@@ -207,5 +207,5 @@ Dynamic Servers プール作成
 サービスの有効化
 `curl -vs -H "Fastly-Key: ${API_KEY}" -X PUT https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/activate | jq`
 
-プールへサーバー追加
-`curl -vs -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d 'address=<ip>' | jq`
+プールからサーバー削除
+`curl -vs -H "Fastly-Key: ${API_KEY}" -X DELETE https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server/${SERVER_ID} | jq`
