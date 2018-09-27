@@ -189,6 +189,9 @@ return(pass);
 2. **確認** `https://lab0927-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **確認** マイクロサービス A のオリジンのいずれかをダウンさせ、さらにページのリロードを繰り返す。ダウン後 30秒間ほどの間は 503 エラーが散発する。その後、ダウンしたオリジンは切り離され、稼働中のオリジンだけが参照される。
 
-## チュートリアル3 (Big Query へのログストリーミング)
+## チュートリアル3 (デモ：Dynamic Servers を用いたロードバランサー)
 
-手順はドキュメント [Log streaming: Google BigQuery](https://docs.fastly.com/guides/streaming-logs/log-streaming-google-bigquery) の通りとなります。この部分は本日はデモとして説明いたします。
+Dynamic Servers を用いると、より柔軟なロードバランス機能が実現できます。チュートリアル2では、ロードバランス設定の変更には、VCL の変更と有効化が必要でした。Dynamic Servers では、API 呼び出しによりサーバーの追加・削除等が可能です。
+
+    .port = "80";だい
+    .port = "80";
