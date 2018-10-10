@@ -11,7 +11,7 @@ SERVICE_ID=xxxxxxxxxxxxxxxxxxxxxx
 ```
 ### サービスの対象バージョンの設定
 ```bash
-VERSION=3```
+VERSION=3
 ```
 
 ## Step 2: API を用いたサービス内容確認
