@@ -103,6 +103,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 2. **確認** `https://lab1010-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
 
 
+
 ## チュートリアル2 (Dynamic Serversによるマルチクラウド・ロードバランサー )
 
 ### ねらい
@@ -139,7 +140,12 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone \
 | jq
 ```
 
-### Step 4: Custom VCL のアップロード
+### Step 4: マイクロサービス A 用オリジンの設定から削除 (UI経由)
+
+1. マイクロサービス A のオリジン <service_a_ip> を、**Origins** の **Host** から消去します。
+
+
+### Step 5: Custom VCL のアップロード
 
 ```
 VERSION=4
@@ -151,6 +157,65 @@ curl -vs -H "Fastly-Key: ${API_KEY}" -X POST -H \
 https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/vcl | jq
 ```
 
+
+### Step 6: サーバープールの作成
+
+```
+curl -sv -H "Fastly-Key: ${API_KEY}" -X POST \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool -d \
+'name=cloudpool&comment=cloudpool' | jq
+
+POOL_ID_1=<id>
+```
+
+### Step 7: サーバープールへサーバーの追加
+
+```
+curl -vs -H "Fastly-Key: ${API_KEY}" -X POST \
+https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d \
+'address=<service_a_ip>' | jq
+
+SERVER_ID_1=<id>
+```
+
+### Step 8: サービスバージョンの有効化
+
+```
+curl -vs -H "Fastly-Key: ${API_KEY}" -X PUT \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/activate | jq
+```
+
+### Step 9: サーバープールへサーバーの追加
+
+```
+curl -vs -H "Fastly-Key: ${API_KEY}" -X POST \
+https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d \
+'address=<service_a_backup_ip>' | jq
+
+SERVER_ID_2=<id>
+```
+
+### Step 10: サーバープール内のサーバーの weight を変更
+
+```
+curl -vs -H "Fastly-Key: ${API_KEY}" -X PUT \
+https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server/${SERVER_ID_1} \
+-d 'weight=10' | jq
+```
+
+### Step 11: (後片付け) サーバープールの削除
+
+```
+curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone \
+| jq
+
+SERVER=6
+
+curl -sv -H "Fastly-Key: ${API_KEY}" -X DELETE \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool/cloudpool \
+| jq
+```
 
 
 ## チュートリアル3 (Directorによるマルチクラウド・ロードバランサー )
@@ -165,6 +230,10 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/vcl | jq
 * マイクロサービス A (バックアップ) URL: `http://<Service_A_Backup_IP>/`
 * マイクロサービス A の VCL 内での backend 参照名: `F_addr_123_45_67_89`
 * マイクロサービス A (バックアップ) の VCL 内での backend 参照名: `F_Service_A_Backup`
+
+### Step 0: マイクロサービス A をオリジンとしてサービスへ追加
+
+チュートリアル2 Step 4 にて削除したオリジン <service_a_ip> を、再度サービスのオリジンとして追加してください。
 
 ### Step 1: マイクロサービス A のバックアップをオリジンとしてサービスへ追加
 
@@ -244,3 +313,10 @@ return(pass);
 2. **確認** `https://lab1010-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **確認** マイクロサービス A のオリジンのいずれかをダウンさせ、さらにページのリロードを繰り返す。ダウン後 30秒間ほどの間は 503 エラーが散発する。その後、ダウンしたオリジンは切り離され、稼働中のオリジンだけが参照される。
 
+
+## チュートリアル4 (宿題) BigQuery へのログストリーミングの有効化
+
+以下のドキュメントを参考にすすめてみてください。
+
+* [Log streaming: Google BigQuery](https://docs.fastly.com/guides/streaming-logs/log-streaming-google-bigquery)
+* [Fastly のリアルタイム ストリーミング ログを BigQuery で分析する方法](https://cloudplatform-jp.googleblog.com/2017/08/how-to-analyze-Fastly-real-time-streaming-logs-with-BigQuery.html)
