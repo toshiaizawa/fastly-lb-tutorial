@@ -69,7 +69,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 3. 表示された画面で Hosts とある下の、**Create host** ボタンをクリック
 4. **Create a host** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
 5. 同画面にて、**Address** フィールドにマイクロサービス B のドメイン `<name.appspot.com>` を記入
-6. 同画面にて、**Enable TLS?** に対して `Yes, Enable TLS.` を選択
+6. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
 7. 同画面の下部から、**Create** ボタンをクリックすると、オリジンとなるホストが新たに作成されます
 
 ### Step 5: /product/ をマイクロサービス B にルーティング
