@@ -32,9 +32,9 @@ Fastly documentation:
 
 ### 必要となる設定値
 
-* ドメイン名: `lab0927-000.global.ssl.fastly.net`
-* マイクロサービス A URL: `http://<Service_A_IP>/`
-* マイクロサービス B URL: `http://<Service_B_IP>/`
+* ドメイン名: `lab1010-000.global.ssl.fastly.net`
+* マイクロサービス A URL: `http://<service_a_ip>/`
+* マイクロサービス B URL: `https://<name.appspot.com>/`
 
 ### Step 1: 新サービスの作成
 
@@ -47,11 +47,11 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 ### Step 2: 新サービスの作成 (つづき)
 
-1. **Create a new service** 画面にて、**Domain** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab0927-000.global.ssl.fastly.net` の形式とします
-2. 同画面にて、**Address** フィールドにマイクロサービス A の IP アドレス `<Service_A_IP>` を記入
+1. **Create a new service** 画面にて、**Domain** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab1010-000.global.ssl.fastly.net` の形式とします
+2. 同画面にて、**Address** フィールドにマイクロサービス A の IP アドレス `<service_a_ip>` を記入
 3. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
 4. 同画面の下部から、**Create** ボタンをクリックすると、新サービスの作成と有効化が行われます
-5. **確認** `https://lab0927-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
+5. **確認** `https://lab1010-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
 
 ### Step 3: コンテンツをキャッシュしない設定にサービスを変更
 
@@ -68,8 +68,8 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 2. 画面左のメニューから **Origins** をクリック
 3. 表示された画面で Hosts とある下の、**Create host** ボタンをクリック
 4. **Create a host** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
-5. 同画面にて、**Address** フィールドにマイクロサービス B の IP アドレス `<Service_B_IP>` を記入
-6. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
+5. 同画面にて、**Address** フィールドにマイクロサービス B のドメイン `<name.appspot.com>` を記入
+6. 同画面にて、**Enable TLS?** に対して `Yes, Enable TLS.` を選択
 7. 同画面の下部から、**Create** ボタンをクリックすると、オリジンとなるホストが新たに作成されます
 
 ### Step 5: /product/ をマイクロサービス B にルーティング
@@ -95,10 +95,24 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 7: マイクロサービス・ルーター機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab0927-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
+2. **確認** `https://lab1010-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
 
 
-## チュートリアル2 (マルチクラウド・ロードバランサー)
+## チュートリアル2 (Dynamic Serversによるマルチクラウド・ロードバランサー )
+
+### ねらい
+
+* 複数オリジン間のロードバランス機能を API から実装できる
+
+### 必要となる設定値
+
+* <api_key>
+* <service_id>
+* <Service_A_IP>
+* <Service_A_backup_ip>
+
+
+## チュートリアル3 (Directorによるマルチクラウド・ロードバランサー )
 
 ### ねらい
 
@@ -186,26 +200,6 @@ return(pass);
 ### Step 5: フェイルオーバー機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab0927-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+2. **確認** `https://lab1010-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **確認** マイクロサービス A のオリジンのいずれかをダウンさせ、さらにページのリロードを繰り返す。ダウン後 30秒間ほどの間は 503 エラーが散発する。その後、ダウンしたオリジンは切り離され、稼働中のオリジンだけが参照される。
 
-## チュートリアル3 (デモ：Dynamic Servers を用いたロードバランサー)
-
-Dynamic Servers を用いると、より柔軟なロードバランス機能が実現できます。チュートリアル2では、ロードバランス設定の変更には、VCL の変更と有効化が必要でした。Dynamic Servers では API 呼び出しにより、VCL にふれることなく、サーバーの追加・削除等が可能です。
-
-API 実行例
-
-サービスのクローン
-`curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone | jq`
-
-Dynamic Servers プール作成
-`curl -sv -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool -d 'name=cloudpool&comment=cloudpool' | jq`
-
-プールへサーバー追加
-`curl -vs -H "Fastly-Key: ${API_KEY}" -X POST https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server -d 'address=<ip>' | jq`
-
-サービスの有効化
-`curl -vs -H "Fastly-Key: ${API_KEY}" -X PUT https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/activate | jq`
-
-プールからサーバー削除
-`curl -vs -H "Fastly-Key: ${API_KEY}" -X DELETE https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server/${SERVER_ID} | jq`
