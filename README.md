@@ -124,18 +124,32 @@ SERVICE_ID=xxxxxxxxxxxxxxxxxxxxxx
 VERSION=3
 ```
 
-### Step 2: API によるサービス内容確認
+### Step 2: API を用いたサービス内容確認
 
 ```
 curl sv -H "Fastly-Key: ${API_KEY}" \
-https://api.fastly.com/service/${SERVICE_ID}/details | jq`
+https://api.fastly.com/service/${SERVICE_ID}/details | jq
 ```
 
-### Step 2: Clone による新バージョンの作成
+### Step 3: (API を用いた) Clone による新バージョンの作成
 
-`curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT \
+```
+curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT \
 https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone \
-| jq`
+| jq
+```
+
+### Step 4: Custom VCL のアップロード
+
+```
+VERSION=4
+
+curl -vs -H "Fastly-Key: ${API_KEY}" -X POST -H \
+"Content-Type: application/x-www-form-urlencoded" \
+--data "name=main&main=true" \
+--data-urlencode "content@main.vcl" \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/vcl | jq
+```
 
 
 
