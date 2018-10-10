@@ -118,13 +118,18 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 ### Step 1: 環境設定
 
-`API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-`SERVICE_ID=xxxxxxxxxxxxxxxxxxxxxx`
-`VERSION=3`
+```
+API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SERVICE_ID=xxxxxxxxxxxxxxxxxxxxxx
+VERSION=3
+```
 
+### Step 2: API によるサービス内容確認
 
-`curl sv -H "Fastly-Key: ${API_KEY}" \
+```
+curl sv -H "Fastly-Key: ${API_KEY}" \
 https://api.fastly.com/service/${SERVICE_ID}/details | jq`
+```
 
 ### Step 2: Clone による新バージョンの作成
 
