@@ -79,7 +79,12 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 3. 同画面にて、**Apply if...** フィールドに `req.url ~ "^/product/"` と記入
 4. 同画面の下部から、**Send and Apply to (ホスト名)** ボタンをクリックすると、ホストに対して条件が設定されます
 
-### Step 6: オリジンに対するリクエストの URL パス部を変更 (/product/* → /*)
+### Step 6: Override host の設定
+
+1. 画面左のメニューから **Settings** をクリック
+2. **Override host** を On にして、**Override host header** フィールドに `<name.appspot.com>` を記入
+
+### Step 7: オリジンに対するリクエストの URL パス部を変更 (/product/* → /*)
 
 1. 画面左のメニューから **Content** をクリック
 2. 表示された画面で Headers とある下の、**Create your first header** ボタンをクリック
@@ -92,7 +97,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 9. 追加した Headers 設定の **Attache a condition** をクリック
 10. **Add a condition to rewrite** 画面にて、ドロップダウンより作成済みの条件である `req.url ~ "^/product/"` を選択
 
-### Step 7: マイクロサービス・ルーター機能の有効化と動作確認
+### Step 8: マイクロサービス・ルーター機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
 2. **確認** `https://lab1010-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
@@ -108,8 +113,25 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 * <api_key>
 * <service_id>
-* <Service_A_IP>
-* <Service_A_backup_ip>
+* <service_a_ip>
+* <service_a_backup_ip>
+
+### Step 1: 環境設定
+
+`API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+`SERVICE_ID=xxxxxxxxxxxxxxxxxxxxxx`
+`VERSION=3`
+
+
+`curl sv -H "Fastly-Key: ${API_KEY}" \
+https://api.fastly.com/service/${SERVICE_ID}/details | jq`
+
+### Step 2: Clone による新バージョンの作成
+
+`curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT \
+https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone \
+| jq`
+
 
 
 ## チュートリアル3 (Directorによるマルチクラウド・ロードバランサー )
