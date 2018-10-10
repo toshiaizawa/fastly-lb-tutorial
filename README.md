@@ -252,7 +252,7 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool/cloudpool \
 ### Step 2: ロードバランス機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab0927-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+2. **確認** `https://lab1010-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **さらに確認** 時間に余裕があれば、**Edit this host** から **Weight** の値を変更した上で有効化。ロードバランスの重み付けが変更できることを確認してください
 
 ### Step 3: ヘルスチェックの作成と適用
@@ -262,11 +262,11 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool/cloudpool \
 3. 表示された画面で Health checks とある下の、**Create your first health check** ボタンをクリック
 4. **Create a health check** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
 5. 同画面にて、**Request** のドロップダウンには `HEAD` を選択、フィールドには `/` を記入
-6. 同画面にて、**Host header** フィールドには `lab0927-000.global.ssl.fastly.net` を記入
+6. 同画面にて、**Host header** フィールドには `lab1010-000.global.ssl.fastly.net` を記入
 7. 同画面にて、**Check frequency** には `Medium` を選択
 8. 画面の下部から、**Create** ボタンをクリック
 9. 表示された Hosts 画面から、`<Service_A_IP>` をクリック
-10. **Edit this host** 画面にて、**Health check** には `HEAD / - lab0927-000.global.ssl.fastly.net` を選択
+10. **Edit this host** 画面にて、**Health check** には `HEAD / - lab1010-000.global.ssl.fastly.net` を選択
 11. 画面の下部から、**Update** ボタンをクリック
 12. `<Service_A_Backup_IP>` についても、9〜11 の手順を繰り返す
 13. 画面の右上にある **Activate** ボタンをクリックすると、新しい設定の有効化が行われます
