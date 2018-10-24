@@ -32,7 +32,7 @@ Fastly documentation:
 
 ### 必要となる設定値
 
-* ドメイン名: `lab1010-000.global.ssl.fastly.net`
+* ドメイン名: `lab1024-000.global.ssl.fastly.net`
 * マイクロサービス A URL: `http://<service_a_ip>/`
 * マイクロサービス B URL: `https://<name.appspot.com>/`
 
@@ -51,7 +51,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 2. 同画面にて、**Address** フィールドにマイクロサービス A の IP アドレス `<service_a_ip>` を記入
 3. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
 4. 同画面の下部から、**Create** ボタンをクリックすると、新サービスの作成と有効化が行われます
-5. **確認** `https://lab1010-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
+5. **確認** `https://lab1024-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
 
 ### Step 3: コンテンツをキャッシュしない設定にサービスを変更
 
@@ -100,7 +100,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 8: マイクロサービス・ルーター機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab1010-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
+2. **確認** `https://lab1024-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
 
 
 
@@ -264,7 +264,7 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool/cloudpool \
 ### Step 2: ロードバランス機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab1010-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+2. **確認** `https://lab1024-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **さらに確認** 時間に余裕があれば、**Edit this host** から **Weight** の値を変更した上で有効化。ロードバランスの重み付けが変更できることを確認してください
 
 ### Step 3: ヘルスチェックの作成と適用
@@ -274,11 +274,11 @@ https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/pool/cloudpool \
 3. 表示された画面で Health checks とある下の、**Create your first health check** ボタンをクリック
 4. **Create a health check** 画面にて、**Name** フィールドに設定名 (任意の文字列) を記入
 5. 同画面にて、**Request** のドロップダウンには `HEAD` を選択、フィールドには `/` を記入
-6. 同画面にて、**Host header** フィールドには `lab1010-000.global.ssl.fastly.net` を記入
+6. 同画面にて、**Host header** フィールドには `lab1024-000.global.ssl.fastly.net` を記入
 7. 同画面にて、**Check frequency** には `Medium` を選択
 8. 画面の下部から、**Create** ボタンをクリック
 9. 表示された Hosts 画面から、`<Service_A_IP>` をクリック
-10. **Edit this host** 画面にて、**Health check** には `HEAD / - lab1010-000.global.ssl.fastly.net` を選択
+10. **Edit this host** 画面にて、**Health check** には `HEAD / - lab1024-000.global.ssl.fastly.net` を選択
 11. 画面の下部から、**Update** ボタンをクリック
 12. `<Service_A_Backup_IP>` についても、9〜11 の手順を繰り返す
 13. 画面の右上にある **Activate** ボタンをクリックすると、新しい設定の有効化が行われます
@@ -322,7 +322,7 @@ return(pass);
 ### Step 5: フェイルオーバー機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab1010-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
+2. **確認** `https://lab1024-000.global.ssl.fastly.net/` へアクセスし、リロードを繰り返す。ロードバランス (複数オリジンへのリクエスト振り分け) が行われている
 3. **確認** マイクロサービス A のオリジンのいずれかをダウンさせ、さらにページのリロードを繰り返す。ダウン後 30秒間ほどの間は 503 エラーが散発する。その後、ダウンしたオリジンは切り離され、稼働中のオリジンだけが参照される。
 
 
