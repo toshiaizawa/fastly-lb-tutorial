@@ -96,7 +96,7 @@ https://api.fastly.com/service/${SERVICE_ID}/pool/${POOL_ID_1}/server/${SERVER_I
 ```
 
 ## Step 11: (後片付け) サーバープールの削除
-###クローン
+### クローン
 ```bash
 curl -sv -H "Fastly-Key: ${API_KEY}" -X PUT \
 https://api.fastly.com/service/${SERVICE_ID}/version/${VERSION}/clone \
