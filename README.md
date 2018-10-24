@@ -47,7 +47,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 
 ### Step 2: 新サービスの作成 (つづき)
 
-1. **Create a new service** 画面にて、**Domain** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab1010-000.global.ssl.fastly.net` の形式とします
+1. **Create a new service** 画面にて、**Domain** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab1024-000.global.ssl.fastly.net` の形式とします
 2. 同画面にて、**Address** フィールドにマイクロサービス A の IP アドレス `<service_a_ip>` を記入
 3. 同画面にて、**Enable TLS?** に対して `No, Do not enable TLS.` を選択
 4. 同画面の下部から、**Create** ボタンをクリックすると、新サービスの作成と有効化が行われます
