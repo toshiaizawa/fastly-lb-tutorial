@@ -90,7 +90,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 7: マイクロサービス・ルーター機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab0717-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
+2. **確認** `https://lab0808-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
 
 
 
