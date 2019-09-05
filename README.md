@@ -32,7 +32,7 @@ Fastly documentation:
 
 ### 必要となる設定値
 
-* ドメイン名: `lab0717-000.global.ssl.fastly.net`
+* ドメイン名: `lab0905-000.global.ssl.fastly.net`
 * マイクロサービス A URL: `http://<service_a_ip>/`
 * マイクロサービス B URL: `https://<name.appspot.com>/`
 
