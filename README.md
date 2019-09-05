@@ -48,13 +48,13 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 2: 新サービスに Domain と Host を設定する
 
 1. **Domains** 画面にて、**Create Your First Domain** ボタンをクリックします。
-2. **Create a domain** 画面にて、**Domain Name** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab0717-000.global.ssl.fastly.net` の形式とします。
+2. **Create a domain** 画面にて、**Domain Name** フィールドにドメイン名を記入します。ここで、ドメイン名は `lab0905-000.global.ssl.fastly.net` の形式とします。
 3. 動画面の **Create** ボタンをクリックして入力した **Domain Name** を確定させます。
 4. 画面左のメニューから **Origins** をクリック
 5. **Hosts** 画面にマイクロサービス A の IP アドレス `<service_a_ip>` を記入
 6. 続いて **Add** ボタンをクリック
 7. 同画面の右上にある **Activate** ボタンをクリックすると、新サービスの作成と有効化が行われます
-8. **確認** `https://lab0717-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
+8. **確認** `https://lab0905-000.global.ssl.fastly.net` へアクセスすると、マイクロサービス A が Fastly 経由で配信されています
 
 ### Step 3: コンテンツをキャッシュしない設定にサービスを変更
 
@@ -90,7 +90,7 @@ Fastly サービスを新たに作成します。これは、チュートリア�
 ### Step 7: マイクロサービス・ルーター機能の有効化と動作確認
 
 1. 画面の上部から、**Activate** ボタンをクリックすると、変更したサービス設定の有効化が行われます
-2. **確認** `https://lab0808-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
+2. **確認** `https://lab0905-000.global.ssl.fastly.net/product/` へアクセスすると、マイクロサービス B が Fastly 経由で配信されています
 
 
 
